@@ -1,0 +1,60 @@
+
+
+body{
+    background-color: dimgray;
+    padding-top: 10%;
+}
+
+.usage-container{
+    display:flex;
+    justify-content: center;
+    height: 375px;
+    width: 100%;
+  }
+
+  .label{
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .chart{
+    /* text-align: center; */
+    flex:2;
+    background-color: rgba(26, 31, 38, 0.082);
+    margin: 10px;
+    height: 100%;
+    width: 500px;
+
+  }
+
+  .disk-chart{
+    /* text-align: center; */
+    flex:2;
+    background-color: rgba(26, 31, 38, 0.082);
+    margin: 10px;
+    height: 100%;
+
+  }
+
+.use-container{
+    text-align: center;
+    margin: 20px;    
+}
+
+  h1{
+    text-align: center;
+  }
+
+.stats-container {
+    margin-top: 50px;
+    display: flex;
+}
+
+.stats {
+    flex-grow: 1;
+
+}
+
+.stat {
+    text-align: center;
+}
