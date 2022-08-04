@@ -65,13 +65,11 @@ async def stats_websocket(client_websocket: WebSocket):
         while True:
             try:
                 data = await client_websocket.receive_json()
-                if data:
+                if data['event'] == 'DATAREQUEST':
+                    await client_websocket.send_json({"event": "DATAREQUEST",
+                                                      "data": Computer.get_stats_dict()})
+                else:
                     logging.debug(data)
-                    if data['event']:
-                        logging.debug(f" data['event'] = {data['event']}")
-                        if data['event'] == 'DATAREQUEST':
-                            await client_websocket.send_json({"event": "DATAREQUEST",
-                                                              "data": Computer.get_stats_dict()})
             except WebSocketDisconnect:
                 await connection_manager.disconnect_websocket(client_websocket)
             except Exception as e:
