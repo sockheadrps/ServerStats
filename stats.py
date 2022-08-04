@@ -1,5 +1,7 @@
 import psutil
 
+# This is just a helper class to poll data from the hardware. The functions are just to help build the class, and the class is intended to
+# only be used in main.py
 
 def get_cpu_count():
     return psutil.cpu_count(logical=False)
