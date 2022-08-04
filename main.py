@@ -61,14 +61,20 @@ async def stats_websocket(client_websocket: WebSocket):
     """
     await connection_manager.connect(client_websocket)
     try:
+        # Initial connection
         await client_websocket.send_json({"event": "CONNECT"})
         while True:
             try:
+                # Client sending data....
                 data = await client_websocket.receive_json()
+                # DATAREQUEST is the asking protocol from the client, requesting the Hardware stats
                 if data['event'] == 'DATAREQUEST':
-                    await client_websocket.send_json({"event": "DATAREQUEST",
-                                                      "data": Computer.get_stats_dict()})
+                    await client_websocket.send_json({
+                        "event": "DATAREQUEST", 
+                        "data": Computer.get_stats_dict()
+                    })
                 else:
+                    # Log, if for some reason we get some other type of protocol from the client
                     logging.debug(data)
             except WebSocketDisconnect:
                 await connection_manager.disconnect_websocket(client_websocket)
