@@ -33,17 +33,21 @@ Three smaller, more detailed sections to view more in depth statistics on hardwa
 [Python 3.7+](https://www.python.org/)
 Install the required dependencies via the requirements.txt file
 open the directory in your terminal and run main.py
-
+    
+To run:
 ```
-pip install -r requirements.txt
-python main.py
+poetry install
+python run python main.py
 ```
 Connect to your ip, at the endpoint '/stats' on port 8080
 ```
 http://YOUR_IP:8080/stats (if accessing from a different client machine than the host)
 http://localhost:8080/stats (if youre accessing from the host machine)
 ```
-
+To run tests (development only):
+```
+poetry run pytets
+```
 ## Development
 
 Want to contribute? Great!
