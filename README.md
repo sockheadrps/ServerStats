@@ -8,6 +8,7 @@ This is just a personal project utilizing some skills in a way that is meaningfu
 - FastAPI Backend
 - Websocket Communication
 - ChartJS
+- Pytest
 
 ## Features
 
@@ -22,6 +23,8 @@ Three smaller, more detailed sections to view more in depth statistics on hardwa
 - [FastAPI](https://fastapi.tiangolo.com/) -
 - HTML/CSS/JS
 - [ChartJS](https://www.chartjs.org/)
+- [Poetry](https://python-poetry.org/docs/basic-usage/)
+- [Pytest](https://docs.pytest.org/en/7.1.x/)
 
 ## Usage
 - Run main.py on the computer you wish to monitor, then connect to it via LAN (http://LANIP:8080/stats)
