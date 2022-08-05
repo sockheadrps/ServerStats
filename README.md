@@ -46,7 +46,7 @@ http://localhost:8080/stats (if youre accessing from the host machine)
 ```
 To run tests (development only):
 ```
-poetry run pytets
+poetry run pytest
 ```
 ## Development
 
