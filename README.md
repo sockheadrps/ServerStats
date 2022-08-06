@@ -34,13 +34,11 @@ Three smaller, more detailed sections to view more in depth statistics on hardwa
 ## Installation
 
 [Python 3.7+](https://www.python.org/)
-Install the required dependencies via the requirements.txt file
-open the directory in your terminal and run main.py
     
 To run:
 ```
 poetry install
-python run python main.py
+poetry run python main.py
 ```
 Connect to your ip, at the endpoint '/stats' on port 8080
 ```
