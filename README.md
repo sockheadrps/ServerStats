@@ -1,6 +1,6 @@
 
 # ServerStats
-![Alt Text](https://github.com/sockheadrps/ServerStats/blob/main/18d3fabd7697a28ce7a5161f424964e5.gif)
+![Alt Text](https://github.com/sockheadrps/ServerStats/blob/main/88c629a5893c04a876ff51f0a740dcf1.gif)
 ## _Server health at a glance!_
 
 This is just a personal project utilizing some skills in a way that is meaningful to me. At the core, this project leverages serving a web client front end with FastAPI to monitor the health of my development server at home. Some notable skills:
