@@ -37,8 +37,8 @@ function requestTimer() {
 
 
 // Chart configs
-let updateInterval = 20 //in ms
-let numberElements = 200;
+let updateInterval = 1000 //in ms
+let numberElements = 120;
 
 //Globals
 let updateCount = 0;
@@ -54,8 +54,8 @@ let diskUsageChart = document.getElementById("diskUsage");
 let commonOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    backgroundColor: "rgba(255,99,132,0.2)",
-    borderColor: "rgba(255,99,132,1)",
+    backgroundColor: "rgba(33,31,51,0.5)",
+    borderColor: "rgba(33,31,51,1)",
     fill: true,
     scales: {
       x: {
@@ -71,7 +71,7 @@ let commonOptions = {
         beginAtZero: true,
         max: 100,
         grid: {
-            color: "grey"
+            color: "rgba(33,31,51,0.2)"
         },
         ticks: {
             color: "black"
@@ -127,6 +127,8 @@ var ramUsageChartInstance = new Chart(ramUsageChart, {
 // diskUsageChart Instance
 var diskUsageChartInstance = new Chart(diskUsageChart, {
     type: 'doughnut',
+    responsive: false,
+    maintainAspectRatio: false,
     labels: [
         'free',
         'Used'
@@ -136,8 +138,8 @@ var diskUsageChartInstance = new Chart(diskUsageChart, {
           label: "Disk Usage",
           data: [1, 1],
           backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
+            'rgba(189, 27, 15, .8)',
+            'rgba(33, 31, 81, .9)',
           ],
           hoverOffset: 4
       }]
@@ -150,7 +152,9 @@ var diskUsageChartInstance = new Chart(diskUsageChart, {
       }
     })
 });
-
+function shift(arr) {
+  return arr.map((_, i, a) => a[(i + a.length - 1) % a.length]);
+}
 // Function to push data to chart object instances
 function addData(data) {
     if(data){
@@ -180,12 +184,14 @@ function addData(data) {
         // RAM Usage
         ramUsageChartInstance.data.labels.shift();
         ramUsageChartInstance.data.datasets[0].data.shift();
-
+        location.reload();
       }
       else updateCount++;
+      console.log(cpuUsageChartInstance.data.datasets[0].data)
       cpuUsageChartInstance.update();
       ramUsageChartInstance.update();
       diskUsageChartInstance.update();
+      
 
     }
   };
@@ -193,6 +199,7 @@ function addData(data) {
   // Update HTML elements
 function updateData(data) {
     addData(data)
+    console.log(data)
     cpu_count.innerHTML = "Core count: " + data.cpu_count.toString()
     cpu_usage.innerHTML = "CPU usage: " + data.cpu_usage.toString() + "%"
     cpu_frequency.innerHTML = "CPU Frequency: " + data.cpu_frequency.current_frequency.toString() + " GHz"
@@ -203,6 +210,7 @@ function updateData(data) {
     disk_free.innerHTML = "Disk Space Free: " + data.disk_free.toString() + " GB"
     disk_used.innerHTML = "Disk Space used: " + data.disk_used.toString() + " GB"
     disk_percentage = "Disk Space Used: "+ data.disk_percentage.toString() + "%"
+
 
 }
 updateData()
