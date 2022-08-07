@@ -1,18 +1,21 @@
-from utilities import connection_manager
-from fastapi.testclient import TestClient
-from src.tests.utilities.main import app
-from fastapi import WebSocket, WebSocketDisconnect
 import pytest
 
+
+from fastapi.testclient import TestClient
+from fastapi import WebSocket, WebSocketDisconnect
+
+from server_stats.__main__ import app
+
+from server_stats.connection_manager import ConnectionManager
 
 """
 This feels like a hacky-way to test this context manager, but I cant think of any other way to do it. The test will
 fail if for any reason an uncaught exception is raised in the TestClient endpoint in this test(stats_websocket)
 """
 
-
+# TODO: a lot of this should be in conftest.py
 client = TestClient(app, backend_options={"use_uvloop": True})
-connection_manager = connection_manager.Manager()
+connection_manager = ConnectionManager()
 
 
 @app.websocket("/ws/test/stats")
