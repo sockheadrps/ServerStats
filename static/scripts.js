@@ -156,7 +156,7 @@ function shift(arr) {
 }
 
 let updateCount = 0;
-let numberElements = 120;
+let numberElements = 30;
 // Function to push data to chart object instances
 function addData(data) {
   if (data) {
@@ -180,7 +180,6 @@ function addData(data) {
       // RAM Usage
       ramUsageChartInstance.data.labels.shift();
       ramUsageChartInstance.data.datasets[0].data.shift();
-      location.reload();
     }
     else updateCount++;
 
