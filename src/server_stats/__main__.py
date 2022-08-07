@@ -9,7 +9,15 @@ from fastapi.templating import Jinja2Templates
 
 # REVIEW: all internal imports should be relative
 from .connection_manager import ConnectionManager
-from .constants import HOST, PORT, STATIC_DIR, STATIC_ROUTE, TEMPLATES_DIR
+from .constants import (
+    HOST,
+    PORT,
+    ROOT,
+    STATIC_DIR,
+    STATIC_ROUTE,
+    TEMPLATES_DIR,
+    WEBSOCKET_ROUTE,
+)
 from .computer import Computer
 from .helpers import generate_id
 
@@ -26,6 +34,9 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 connection_manager = ConnectionManager()
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
+
+# REVIEW: Didn't do a ton of research on this but this may not be the recommended mounting pattern for static files
+# https://fastapi.tiangolo.com/tutorial/static-files/
 app.mount(
     STATIC_ROUTE,
     # REVIEW: file paths should be constants in most cases
@@ -43,7 +54,7 @@ async def favicon() -> None:
 
 
 # REVIEW: Since there is only a single endpoint it should be kept as root
-@app.get("/", response_class=HTMLResponse)
+@app.get(ROOT, response_class=HTMLResponse)
 def root(request: Request):
     """
     HTTP endpoint to serve the Server Statistics Dashboard
@@ -58,7 +69,7 @@ def root(request: Request):
 
 # REVIEW: Since there is only a single websocket it should be kept as root. As you add
 # more websockets you can change this if necessary
-@app.websocket("/ws")
+@app.websocket(WEBSOCKET_ROUTE)
 async def root_websocket(client_websocket: WebSocket):
     """
     Web Socket endpoint for communicating the "Server Statistics" in JSON to the client. Communication with the
