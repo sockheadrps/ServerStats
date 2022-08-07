@@ -18,18 +18,11 @@ Three smaller, more detailed sections to view more in depth statistics on hardwa
 
 ## Tech
 
-
-
 - [FastAPI](https://fastapi.tiangolo.com/) -
 - HTML/CSS/JS
 - [ChartJS](https://www.chartjs.org/)
 - [Poetry](https://python-poetry.org/docs/basic-usage/)
 - [Pytest](https://docs.pytest.org/en/7.1.x/)
-
-## Usage
-- Run main.py on the computer you wish to monitor, then connect to it via LAN (http://LANIP:8080/stats)
-
-
 
 ## Installation
 
@@ -38,12 +31,12 @@ Three smaller, more detailed sections to view more in depth statistics on hardwa
 To run:
 ```
 poetry install
-poetry run python main.py
+poetry run python -m server_stats
 ```
-Connect to your ip, at the endpoint '/stats' on port 8080
+Connect to your ip, at the main endpoint on port 8000 (by default)
 ```
-http://YOUR_IP:8080/stats (if accessing from a different client machine than the host)
-http://localhost:8080/stats (if youre accessing from the host machine)
+http://YOUR_IP:8000/(if accessing from a different client machine than the host)
+http://localhost:8080/ (if youre accessing from the host machine)
 ```
 To run tests (development only):
 ```
@@ -51,7 +44,17 @@ poetry run pytest
 ```
 ## Development
 
-Want to contribute? Great!
+### Contributors
+
+...
+
+### TODO
+
+- [ ] Maximum number of points within chart to prevent crowding. Current method not really working
+- [ ] Temperature monitoring for Windows
+- [ ] Visual display of temperature
+- [ ] Js module for charts
+- [ ] App integration tests strategy
 
 
 ## License
