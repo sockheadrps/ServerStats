@@ -9,7 +9,7 @@ from fastapi.templating import Jinja2Templates
 
 # REVIEW: all internal imports should be relative
 from .connection_manager import ConnectionManager
-from .constants import HOST, PORT, STATIC_DIR, TEMPLATES_DIR
+from .constants import HOST, PORT, STATIC_DIR, STATIC_ROUTE, TEMPLATES_DIR
 from .computer import Computer
 from .helpers import generate_id
 
@@ -27,7 +27,7 @@ app = FastAPI()
 connection_manager = ConnectionManager()
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 app.mount(
-    "/static",
+    STATIC_ROUTE,
     # REVIEW: file paths should be constants in most cases
     StaticFiles(directory=STATIC_DIR),
     name="static",
@@ -42,8 +42,9 @@ async def favicon() -> None:
     raise HTTPException(status_code=403, detail="No favicon")
 
 
+# REVIEW: Since there is only a single endpoint it should be kept as root
 @app.get("/", response_class=HTMLResponse)
-def stats_endpoint(request: Request):
+def root(request: Request):
     """
     HTTP endpoint to serve the Server Statistics Dashboard
     :param request: HTTP Request from Client
@@ -55,8 +56,10 @@ def stats_endpoint(request: Request):
     )
 
 
+# REVIEW: Since there is only a single websocket it should be kept as root. As you add
+# more websockets you can change this if necessary
 @app.websocket("/ws")
-async def stats_websocket(client_websocket: WebSocket):
+async def root_websocket(client_websocket: WebSocket):
     """
     Web Socket endpoint for communicating the "Server Statistics" in JSON to the client. Communication with the
     data visualization client is done here.
