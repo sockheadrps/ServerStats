@@ -1,39 +1,37 @@
-from utilities import stats
-
-
-def test_get_cpu_count():
+def test_get_cpu_count(test_computer):
     """
     Assertion 1: Function returns an int
     Assertion 2: Function returns a valid number of cores.
     """
-    assert isinstance(stats.get_cpu_count(), int) is True
-    assert stats.get_cpu_count() > 0
+    # REVIEW: is instance and boolean expressions already return a boolean, no
+    # need to check "is True"
+    assert isinstance(test_computer.cpu_count, int)
+    assert test_computer.cpu_count > 0
 
 
-def test_get_cpu_usage():
+def test_get_cpu_usage(test_computer):
     """
     Assertion 1: Function returns a float
     """
-    assert isinstance(stats.get_cpu_usage(), float) is True
+    assert isinstance(test_computer.cpu_percent, float)
 
 
-def test_get_cpu_frequency():
+def test_get_cpu_frequency(test_computer):
     """
     Loop Assertions: Checks the key is a string and the value is a float
     Assertion 2: Function returns a dict
     """
-    cpu_frequency_dict = stats.get_cpu_frequency()
+    cpu_frequency_dict = test_computer.cpu_frequency
     for item in cpu_frequency_dict.keys():
-        assert isinstance(item, str) is True
-        assert isinstance(cpu_frequency_dict[item], float) is True
-    assert isinstance(stats.get_cpu_frequency(), dict) is True
+        assert isinstance(item, str)
+        assert isinstance(cpu_frequency_dict[item], float)
 
 
-def test_get_core_temperatures():
+def test_get_core_temperatures(test_computer):
     """
     Assertion 1: Function returns a dict
     """
-    assert isinstance(stats.get_temperatures(), dict) is True
+    assert isinstance(test_computer.temperatures, dict)
 
 
 def test_get_ram_totals():
