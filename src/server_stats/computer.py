@@ -22,6 +22,7 @@ class Computer:
     """
 
     def get_stats_dict(self) -> dict:
+        # REVIEW: Ideally all dict keys that are set in code should be constants
         stats_dict = {
             "cpu_count": self.cpu_count,
             "cpu_usage": self.cpu_percent,
