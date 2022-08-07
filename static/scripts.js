@@ -7,7 +7,7 @@ var socket = new WebSocket("ws://localhost:8000" + socketRoute);
 // On open function
 socket.onopen = function (event) {
   console.log("Connected to socket: " + socketRoute)
-  console.log("Sending request " + dataRequest)
+  console.log("Sending initial request " + dataRequest)
   socket.send(dataRequest);
 };
 
