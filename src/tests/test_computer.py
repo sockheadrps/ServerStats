@@ -91,7 +91,7 @@ def test_get_disk_percentage_used(test_computer):
     assert isinstance(test_computer.disk_percentage_used, float)
 
 
-def test_computer_class(test_computer):
+def test_get_stats_dict(test_computer):
     """
     No need to test the actual data inside the returned dictionary, all of that data has been validated through
     the function tests preceding this test.
