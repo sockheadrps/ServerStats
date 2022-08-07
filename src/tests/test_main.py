@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app, generate_id
+from src.tests.utilities.main import app, generate_id
 from httpx import AsyncClient
 import pytest
 

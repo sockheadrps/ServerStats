@@ -1,6 +1,6 @@
 from utilities import connection_manager
 from fastapi.testclient import TestClient
-from main import app
+from src.tests.utilities.main import app
 from fastapi import WebSocket, WebSocketDisconnect
 import pytest
 
