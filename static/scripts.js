@@ -37,21 +37,10 @@ let disk_free = document.getElementById("disk_free")
 let disk_used = document.getElementById("disk_used")
 let disk_percentage = document.getElementById("disk_percentage")
 
-
-
 // Interval Timer to request Stats
-setInterval(requestTimer, 1000);
 function requestTimer() {
   socket.send(JSON.stringify({ event: "DATAREQUEST" }));
 }
-
-
-// Chart configs
-let updateInterval = 1000 //in ms
-let numberElements = 120;
-
-//Globals
-let updateCount = 0;
 
 
 // Chart Objects
@@ -165,16 +154,13 @@ var diskUsageChartInstance = new Chart(diskUsageChart, {
 function shift(arr) {
   return arr.map((_, i, a) => a[(i + a.length - 1) % a.length]);
 }
+
+let updateCount = 0;
+let numberElements = 120;
 // Function to push data to chart object instances
 function addData(data) {
   if (data) {
-    let today = new Date();
-    let time
-    if (today.getMinutes < 10) {
-      time = today.getHours() + ":0" + today.getMinutes();
-    } else {
-      time = today.getHours() + ":" + today.getMinutes();
-    }
+    let time = new Date().toLocaleTimeString();
     // CPU Usage
     cpuUsageChartInstance.data.labels.push(time);
     cpuUsageChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data.cpu_usage) });
@@ -197,6 +183,7 @@ function addData(data) {
       location.reload();
     }
     else updateCount++;
+
     cpuUsageChartInstance.update();
     ramUsageChartInstance.update();
     diskUsageChartInstance.update();
@@ -218,6 +205,7 @@ function updateData(data) {
   disk_free.innerHTML = "Disk Space Free: " + data.disk_free.toString() + " GB"
   disk_used.innerHTML = "Disk Space used: " + data.disk_used.toString() + " GB"
   disk_percentage = "Disk Space Used: " + data.disk_percentage.toString() + "%"
-
-
 }
+
+let updateInterval = 5000
+setInterval(requestTimer, updateInterval);
