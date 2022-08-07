@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 
 # REVIEW: all internal imports should be relative
 from .connection_manager import ConnectionManager
-from .constants import STATIC_DIR, TEMPLATES_DIR
+from .constants import HOST, PORT, STATIC_DIR, TEMPLATES_DIR
 from .computer import Computer
 
 # REVIEW: best practice for logger is to initialize logger settings in __ini__.py
@@ -51,7 +51,7 @@ async def favicon() -> None:
 
 
 @app.get("/", response_class=HTMLResponse)
-def stats_endpoint(request: Request) -> HTMLResponse:
+def stats_endpoint(request: Request):
     """
     HTTP endpoint to serve the Server Statistics Dashboard
     :param request: HTTP Request from Client
@@ -63,7 +63,7 @@ def stats_endpoint(request: Request) -> HTMLResponse:
     )
 
 
-@app.websocket("/ws/stats")
+@app.websocket("/ws")
 async def stats_websocket(client_websocket: WebSocket):
     """
     Web Socket endpoint for communicating the "Server Statistics" in JSON to the client. Communication with the
@@ -72,31 +72,17 @@ async def stats_websocket(client_websocket: WebSocket):
     :return: No explicit return, just continuous requests for information from client
     """
     await connection_manager.connect(client_websocket)
-    try:
-        # Initial connection
-        await client_websocket.send_json({"event": "CONNECT"})
-        while True:
-            try:
-                # Client sending data....
-                data = await client_websocket.receive_json()
+    # Initial connection
+    while True:
+        # Client sending data....
+        data = await client_websocket.receive_json()
 
-                # DATAREQUEST is the asking protocol from the client requesting for the Hardware stats
-                if data["event"] == "DATAREQUEST":
-                    await client_websocket.send_json(
-                        {"event": "DATAREQUEST", "data": Computer.get_stats_dict()}
-                    )
-                else:
-                    # Log if for some reason we get unexpected communication protocol from the client
-                    # REVIEW: want to log to a specific logger rather than all loggers
-                    logger.debug(data)
-            except WebSocketDisconnect:
-                await connection_manager.disconnect_websocket(client_websocket)
-                break
-            except Exception as e:
-                logger.debug(e)
-    except Exception as e:
-        logger.debug(e)
+        # DATAREQUEST is the asking protocol from the client requesting for the Hardware stats
+        if data["event"] == "DATAREQUEST":
+            await client_websocket.send_json(
+                {"event": "DATAREQUEST", "stats": Computer().get_stats_dict()}
+            )
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8000, host="127.0.0.1")
+    uvicorn.run(app, port=PORT, host=HOST)
