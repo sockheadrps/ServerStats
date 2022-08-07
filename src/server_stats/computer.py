@@ -1,5 +1,6 @@
-import psutil
 from typing import Dict
+
+import psutil
 
 from .constants import BYTES_IN_GB
 

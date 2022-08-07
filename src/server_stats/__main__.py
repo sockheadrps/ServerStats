@@ -10,8 +10,8 @@ from fastapi.templating import Jinja2Templates
 
 # REVIEW: all internal imports should be relative
 from .connection_manager import ConnectionManager
-from .constants import STATIC_DIR
-from .stats import Computer
+from .constants import STATIC_DIR, TEMPLATES_DIR
+from .computer import Computer
 
 # REVIEW: best practice for logger is to initialize logger settings in __ini__.py
 # then get the logger when being used in a script. __name__ is going to return main which was
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # call it in the if statement below
 app = FastAPI()
 connection_manager = ConnectionManager()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
 app.mount(
     "/static",
     # REVIEW: file paths should be constants in most cases
@@ -42,7 +42,7 @@ def generate_id() -> str:
     return str(uuid.uuid4())
 
 
-# REVIEW: not really needed to type NoRetur, can just have no type hint
+# REVIEW: not really needed to type NoReturn, can just have no type hint
 # or type hint None if you really feel like it
 @app.get("/favicon.ico")
 async def favicon() -> None:
@@ -50,7 +50,7 @@ async def favicon() -> None:
     raise HTTPException(status_code=403, detail="No favicon")
 
 
-@app.get("/stats", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 def stats_endpoint(request: Request) -> HTMLResponse:
     """
     HTTP endpoint to serve the Server Statistics Dashboard
@@ -79,10 +79,11 @@ async def stats_websocket(client_websocket: WebSocket):
             try:
                 # Client sending data....
                 data = await client_websocket.receive_json()
+
                 # DATAREQUEST is the asking protocol from the client requesting for the Hardware stats
                 if data["event"] == "DATAREQUEST":
                     await client_websocket.send_json(
-                        {"event": "DATAREQUEST", "data": Computer.get_stats_dict()}
+                        {"event": "DATAREQUEST", "data": Computer.stats_dict()}
                     )
                 else:
                     # Log if for some reason we get unexpected communication protocol from the client

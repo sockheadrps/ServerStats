@@ -1,5 +1,6 @@
-from fastapi import WebSocket
 from typing import List
+
+from fastapi import WebSocket
 
 
 # REVIEW: classes should be capitalized and named the same as the file
