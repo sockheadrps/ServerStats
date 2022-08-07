@@ -21,7 +21,7 @@ class Computer:
     of querying the status os the available computer components via psutils
     """
 
-    def stats_dict(self) -> dict:
+    def get_stats_dict(self) -> dict:
         stats_dict = {
             "cpu_count": self.cpu_count,
             "cpu_usage": self.cpu_percent,

@@ -83,7 +83,7 @@ async def stats_websocket(client_websocket: WebSocket):
                 # DATAREQUEST is the asking protocol from the client requesting for the Hardware stats
                 if data["event"] == "DATAREQUEST":
                     await client_websocket.send_json(
-                        {"event": "DATAREQUEST", "data": Computer.stats_dict()}
+                        {"event": "DATAREQUEST", "data": Computer.get_stats_dict()}
                     )
                 else:
                     # Log if for some reason we get unexpected communication protocol from the client
@@ -99,4 +99,4 @@ async def stats_websocket(client_websocket: WebSocket):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8080, host="0.0.0.0")
+    uvicorn.run(app, port=8000, host="127.0.0.1")
