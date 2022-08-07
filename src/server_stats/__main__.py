@@ -1,9 +1,8 @@
 # REVIEW: imports should be sorted in groups: top is python standard library, middle is third party, bottom is local
 import logging
-import uuid
 
 import uvicorn
-from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -12,6 +11,7 @@ from fastapi.templating import Jinja2Templates
 from .connection_manager import ConnectionManager
 from .constants import HOST, PORT, STATIC_DIR, TEMPLATES_DIR
 from .computer import Computer
+from .helpers import generate_id
 
 # REVIEW: best practice for logger is to initialize logger settings in __ini__.py
 # then get the logger when being used in a script. __name__ is going to return main which was
@@ -32,14 +32,6 @@ app.mount(
     StaticFiles(directory=STATIC_DIR),
     name="static",
 )
-
-
-def generate_id() -> str:
-    """
-    Generates a UUID string for unique client IDs
-    :return: String representation of UUID object
-    """
-    return str(uuid.uuid4())
 
 
 # REVIEW: not really needed to type NoReturn, can just have no type hint
@@ -71,6 +63,7 @@ async def stats_websocket(client_websocket: WebSocket):
     :param client_websocket: Incoming Web Socket request.
     :return: No explicit return, just continuous requests for information from client
     """
+    # REVIEW: don't need to resend the connection since the .connect method already does this
     await connection_manager.connect(client_websocket)
     # Initial connection
     while True:
