@@ -15,7 +15,8 @@ import typing
 import uvicorn
 import uuid
 
-# the __main__.py (called a dunder main) is the
+# the __main__.py (called a dunder main) is the top-level script that is executed when the program is run
+# https://docs.python.org/3.8/library/__main__.html
 
 app = FastAPI()
 connection_manager = Manager()
