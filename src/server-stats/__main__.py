@@ -8,18 +8,23 @@ from fastapi import (
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-from utilities.connection_manager import Manager
-from utilities.stats import Computer
+from .connection_manager import Manager
+from .stats import Computer
 import logging
 import typing
 import uvicorn
 import uuid
 
+# the __main__.py (called a dunder main) is the
 
 app = FastAPI()
 connection_manager = Manager()
 templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory=r"C:\Users\rpski\Desktop\Example Code\ServStats\static"), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory=r"C:\Users\rpski\Desktop\Example Code\ServStats\static"),
+    name="static",
+)
 
 logging.basicConfig(filename="./logs/logs.log", filemode="w", level=logging.DEBUG)
 
