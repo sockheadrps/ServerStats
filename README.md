@@ -50,7 +50,6 @@ poetry run pytest
 
 ### TODO
 
-- [ ] Maximum number of points within chart to prevent crowding. Current method not really working
 - [ ] Temperature monitoring for Windows
 - [ ] Visual display of temperature
 - [ ] Js module for charts
