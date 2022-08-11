@@ -3,7 +3,6 @@ from fastapi import (
     Request,
     HTTPException,
     WebSocket,
-    WebSocketDisconnect,
 )
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -13,8 +12,9 @@ from utilities.stats import Computer
 import logging
 import typing
 import uvicorn
-import uuid
+import json
 
+connected_services = {}
 
 app = FastAPI()
 connection_manager = Manager()
@@ -22,14 +22,6 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory=r"C:\Users\rpski\Desktop\Example Code\ServStats\static"), name="static")
 
 logging.basicConfig(filename="./logs/logs.log", filemode="w", level=logging.DEBUG)
-
-
-def generate_id() -> str:
-    """
-    Generates a UUID string for unique client IDs
-    :return: String representation of UUID object
-    """
-    return str(uuid.uuid4())
 
 
 @app.get("/favicon.ico")
@@ -45,9 +37,8 @@ def stats_endpoint(request: Request) -> templates.TemplateResponse:
     :param request: HTTP Request from Client
     :return: Returns the associated HTML files to the requesting client
     """
-    client_id = generate_id()
     return templates.TemplateResponse(
-        "index.html", {"request": request, "id": client_id}
+        "index.html", {"request": request}
     )
 
 
@@ -59,29 +50,43 @@ async def stats_websocket(client_websocket: WebSocket):
     :param client_websocket: Incoming Web Socket request.
     :return: No explicit return, just continuous requests for information from client
     """
+
+    # Create manager object based on 'sec-websocket-key' and track connected services
+    global connected_services
     await connection_manager.connect(client_websocket)
-    try:
-        # Initial connection
-        await client_websocket.send_json({"event": "CONNECT"})
-        while True:
-            try:
-                # Client sending data....
-                data = await client_websocket.receive_json()
-                # DATAREQUEST is the asking protocol from the client requesting for the Hardware stats
-                if data["event"] == "DATAREQUEST":
-                    await client_websocket.send_json(
-                        {"event": "DATAREQUEST", "data": Computer.get_stats_dict()}
-                    )
-                else:
-                    # Log if for some reason we get unexpected communication protocol from the client
-                    logging.debug(data)
-            except WebSocketDisconnect:
-                await connection_manager.disconnect_websocket(client_websocket)
+
+    # Initial connection
+    await client_websocket.send_json({"event": "CONNECT"})
+    while True:
+        # Client sending data....
+        data = await client_websocket.receive()
+
+        # Handling for websocket disconnect code
+        if 'code' in data.keys():
+            if data['code'] == 1006:
+                disconnection_service = await connection_manager.disconnect_websocket(client_websocket)
+                connected_services.pop(disconnection_service)
                 break
-            except Exception as e:
-                logging.debug(e)
-    except Exception as e:
-        logging.debug(e)
+
+        # otherwise, process data
+        if 'text' in data.keys():
+            data_dict = json.loads(data['text'])
+
+            match data_dict["event"]:
+                case "CONNECT":
+                    # Flagging which services are active
+                    if data_dict['client'] == "SERVER-STATS":
+                        connected_services[client_websocket.headers['sec-websocket-key']] = "SERVER-STATS"
+                    if data_dict['client'] == "TWITCH-BOT":
+                        connected_services[client_websocket.headers['sec-websocket-key']] = "TWITCH-BOT"
+                # Server-stats client requesting data
+                case "data-request":
+                    if "TWITCH-BOT" in connected_services:
+                        await client_websocket.send_json(
+                                {"event": "DATAREQUEST", "data": Computer.get_stats_dict(), "TWITCH": True})
+                    else:
+                        await client_websocket.send_json(
+                            {"event": "DATAREQUEST", "data": Computer.get_stats_dict(), "TWITCH": False})
 
 
 if __name__ == "__main__":
