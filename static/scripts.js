@@ -3,7 +3,7 @@ var socket = new WebSocket("ws://localhost:8080/ws/stats");
 
 // On open function
 socket.onopen = function(event) {
-    socket.send(JSON.stringify({event: "DATAREQUEST"}));
+    socket.send(JSON.stringify({event: "CONNECT", "client": "SERVER-STATS"}));
 };
 
 
@@ -19,11 +19,14 @@ let disk_total = document.getElementById("disk_total")
 let disk_free = document.getElementById("disk_free")
 let disk_used = document.getElementById("disk_used")
 let disk_percentage = document.getElementById("disk_percentage")
-
-
+let service_twitch = document.getElementsByClassName("service-twitch").item(0)
+console.log(service_twitch)
+let twitch
 // Main Websocket Communication
 socket.onmessage = function(event) {
     let data = JSON.parse(event.data);
+    console.log(data)
+    twitch = data.TWITCH;
     if (data.data){
         updateData(data.data)
     }
@@ -32,7 +35,7 @@ socket.onmessage = function(event) {
 // Interval Timer to request Stats
 setInterval(requestTimer, 1000);
 function requestTimer() {
-  socket.send(JSON.stringify({event: "DATAREQUEST"}));
+  socket.send(JSON.stringify({event: "data-request"}));
 }
 
 
@@ -184,10 +187,8 @@ function addData(data) {
         // RAM Usage
         ramUsageChartInstance.data.labels.shift();
         ramUsageChartInstance.data.datasets[0].data.shift();
-        location.reload();
       }
       else updateCount++;
-      console.log(cpuUsageChartInstance.data.datasets[0].data)
       cpuUsageChartInstance.update();
       ramUsageChartInstance.update();
       diskUsageChartInstance.update();
@@ -210,7 +211,14 @@ function updateData(data) {
     disk_free.innerHTML = "Disk Space Free: " + data.disk_free.toString() + " GB"
     disk_used.innerHTML = "Disk Space used: " + data.disk_used.toString() + " GB"
     disk_percentage = "Disk Space Used: "+ data.disk_percentage.toString() + "%"
-
+    if (twitch === true){
+      service_twitch.classList.remove("service-off")
+      service_twitch.classList.add("service-on")
+    }
+    if (twitch == false){
+      service_twitch.classList.remove("service-on")
+      service_twitch.classList.add("service-off");
+    }
 
 }
 updateData()
