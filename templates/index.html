@@ -20,52 +20,70 @@
 
 <body>
 
-    <div class="usage-container">
-        <!-- CPU Usage -->
-        <div class="use-container">
-            <div class="container-label">CPU Usage</div>
-        <div class="chart">
-            <canvas id="cpuUsage"></canvas>
+  <main>
+    <section class="glass">
+        <div class="usage-container">
+            <!-- CPU Usage -->
+            <div class="use-container">
+                <div class="container-label">CPU Usage</div>
+            <div class="chart">
+                <canvas id="cpuUsage"></canvas>
+            </div>
+    
+            <div class="stats">
+              <h1>CPU Stats</h1>
+              <div class="stat" id="cpu_count"></div>
+              <div class="stat" id="cpu_usage"></div>
+              <div class="stat" id="cpu_frequency"></div>
+              <div class="stat" id="core_temperature"></div>
+            </div>
         </div>
+        <!-- RAM Usage -->
+            <div class="use-container">
+                <div class="container-label">RAM Usage</div>
+            <div class="chart">
+                <canvas id="ramUsage"></canvas>
+            </div>
+            <div class="stats">
+              <h1>Ram Stats</h1>
+              <div class="stat-area">
+                <div class="stat" id="ram_total"></div>
+                <div class="stat" id="ram_available"></div>
+                <div class="stat" id="ram_percentage"></div>
+              </div>
+            </div>
+        </div>
+        <!-- Disk Usage -->
+            <div class="use-container">
+              <div class="container-label">Disk Usage</div>
+              <div class="disk-chart">
+                <canvas id="diskUsage"></canvas>
+              </div>
+              <div class="stats">
+                <h1>Disk Stats</h1>
+                <div class="stat" id="disk_total"></div>
+                <div class="stat" id="disk_free"></div>
+                <div class="stat" id="disk_used"></div>
+                <div class="stat" id="disk_percentage"></div>
+              </div>
+            </div>
+      </div>
+      <div class="services">
+        <div class="service service-twitch service-off">
+          <h1>Twitch Bot</h1>
+        </div>
+        <div class="service service-two service-on">
+          <h1>Controller</h1>
+        </div>
+        <div class="service service-three service-off">
+          <h1>Empty</h1>
+        </div>
+      </div>
 
-        <div class="stats">
-          <h1>CPU Stats</h1>
-          <div class="stat" id="cpu_count"></div>
-          <div class="stat" id="cpu_usage"></div>
-          <div class="stat" id="cpu_frequency"></div>
-          <div class="stat" id="core_temperature"></div>
-        </div>
-    </div>
-    <!-- RAM Usage -->
-        <div class="use-container">
-            <div class="container-label">RAM Usage</div>
-        <div class="chart">
-            <canvas id="ramUsage"></canvas>
-        </div>
-        <div class="stats">
-          <h1>Ram Stats</h1>
-          <div class="stat-area">
-            <div class="stat" id="ram_total"></div>
-            <div class="stat" id="ram_available"></div>
-            <div class="stat" id="ram_percentage"></div>
-          </div>
-        </div>
-    </div>
-    <!-- Disk Usage -->
-        <div class="use-container">
-          <div class="container-label">Disk Usage</div>
-          <div class="disk-chart">
-            <canvas id="diskUsage"></canvas>
-          </div>
-          <div class="stats">
-            <h1>Disk Stats</h1>
-            <div class="stat" id="disk_total"></div>
-            <div class="stat" id="disk_free"></div>
-            <div class="stat" id="disk_used"></div>
-            <div class="stat" id="disk_percentage"></div>
-          </div>
-        </div>
-  </div>
+
+    </section>
+    <div class="chevron"></div>
+</main>
   
 </body>
 </html>
