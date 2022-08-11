@@ -1,9 +1,70 @@
-
-body{
-  background: linear-gradient(#272537, #211F33);
-  height: 100%;
-  width: auto;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+main {
+  height: 100vh;
+  background: linear-gradient(to right top, #3a3661, #231e4d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass {
+  background: white;
+  min-height: 90vh;
+  width: 90%;
+  background: linear-gradient(
+      to right bottom,
+       rgba(255, 255, 255, 0.05), 
+       rgba(255, 255, 255, .1)
+       );
+  border-radius: 2rem;
+  z-index: 3;
+  backdrop-filter: blur(1.1rem);
+}
+
+.chevron{
+  height: 6rem;
+  width: 80%;
+  position: absolute;
+}
+.chevron:before {
+  content: '';
+  position: absolute;
+  top: 17rem;
+  left: -10rem;
+  height: 85%;
+  width: 49vw;
+  background: linear-gradient(
+      to right bottom,
+       rgba(255, 255, 255, 0.05), 
+       rgba(255, 255, 255, .1)
+       );
+  transform: skew(0deg, 15deg);
+  z-index: 2;
+  border-radius: 1.5rem;
+}
+.chevron:after {
+  content: '';
+  position: absolute;
+  top: 17rem;
+  right: -10rem;
+  height: 85%;
+  width: 49vw;
+  background: linear-gradient(
+      to right bottom,
+       rgba(255, 255, 255, 0.05), 
+       rgba(255, 255, 255, .1)
+       );
+  transform: skew(0deg, -15deg);
+  z-index: 2;
+  border-radius: 1.5rem;
+} 
+
+
 
 .main-container {
   margin-top: 5%;
@@ -16,7 +77,7 @@ body{
   /* border: 1px solid rgb(255, 255, 255); */
   display:flex;
   justify-content: center;
-  height: 800px;
+  height: 600px;
   margin: 25px 10px 10px 10px;
 }
 
@@ -47,7 +108,8 @@ body{
   padding: 20px;   
   margin: 10px;
   height: 600px;
-  background: linear-gradient(#7e5006, #8a6909);
+  background: linear-gradient(to right bottom, rgba(145, 92, 8, 0.7), rgba(138, 105, 9, .9));
+
   border-radius: 10px;
   box-shadow: 3px 3px rgba(86, 77, 6, 0.9);
 }
@@ -67,4 +129,54 @@ h1{
   margin-top: 8px;
   text-align: center;
   color: #211F33;
+}
+
+.services{
+  position: relative;
+  display: flex;
+  color: aliceblue;
+  margin-top: 6rem;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 1rem;
+  height: 5rem;
+  border-radius: 1.5rem;
+
+}
+
+.service {
+  border-radius: 1.5rem;
+  width: 90%;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  padding-top: .8rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+
+}
+
+.service-twitch{
+  width: 10%;
+  flex: 1;
+
+}
+.service-two{
+  width: 10%;
+  flex: 1;
+
+}
+.service-three{
+  width: 10%;
+  flex: 1;
+}
+
+.service-on {
+  background: linear-gradient(to right top, rgba(58, 54, 97, .5), rgba(35, 30, 77, .9));
+  color: rgba(180, 138, 12, 0.9);
+}
+
+.service-off {
+  background: linear-gradient(to right top, rgba(51, 54, 97, .2), rgba(35, 30, 77, .3));
+  color: #2f2a5f;
 }
